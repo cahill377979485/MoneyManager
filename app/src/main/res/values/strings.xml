@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">借还记录</string>
+    <string name="input">录入</string>
+    <string name="input_record">输入日期描述金额，如20200101借1</string>
+    <string name="real_time_search">实时搜索</string>
+    <string name="modify">更新</string>
+    <string name="delete">删除</string>
+</resources>

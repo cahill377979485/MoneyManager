@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="myToastBg">#555555</color>
+    <color name="myWhite">#ffffff</color>
+    <color name="myTitle">#383838</color>
+    <color name="myText">#666666</color>
+    <color name="myGreen">#2fc989</color>
+    <color name="myRed">#FF646F</color>
+    <color name="myYellow">#FDDA36</color>
+    <color name="myYellowDark">#E9C831</color>
+</resources>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.my.moneymanager.vm.MainVM" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        tools:context=".v.MainActivity">
+
+        <TextView
+            android:id="@+id/tv_total"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:text="@{vm.totalStr}"
+            android:textColor="@color/myTitle"
+            android:onClick="@{vm::clickChart}"
+            app:layout_constraintEnd_toStartOf="@id/cb_search"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="总额:3999" />
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/cb_search"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:checked="@{vm.searchFlag}"
+            android:gravity="center"
+            android:onClick="@{vm::clickCheckBox}"
+            android:text="@string/real_time_search"
+            android:textColor="@color/myTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_total" />
+
+        <EditText
+            android:id="@+id/et"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#08333333"
+            android:gravity="center_vertical"
+            android:hint="@string/input_record"
+            android:textSize="15sp"
+            android:paddingStart="0dp"
+            android:paddingEnd="20dp"
+            android:text="@={vm.etText}"
+            app:addTextChangedListener="@{vm.watcher}"
+            app:layout_constraintBottom_toBottomOf="@id/tv_input"
+            app:layout_constraintEnd_toStartOf="@id/tv_input"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_input" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            android:onClick="@{vm::clickClear}"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_clear"
+            android:visibility="@{vm.etText.length>0?View.VISIBLE:View.INVISIBLE}"
+            app:layout_constraintBottom_toBottomOf="@id/et"
+            app:layout_constraintEnd_toEndOf="@id/et"
+            app:layout_constraintTop_toTopOf="@id/et" />
+
+        <Button
+            android:id="@+id/tv_input"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:background="#0f333333"
+            android:gravity="center"
+            android:onClick="@{vm::clickInput}"
+            android:text='@{vm.updateFlag?"更新":"录入"}'
+            android:textColor="@color/myTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/cb_search"
+            app:layout_constraintTop_toBottomOf="@id/tv_total"
+            tools:text="录入" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:itemViewCacheSize="@{vm.dataList.size()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_input"
+            app:refreshFlag="@{vm.refreshFlag}"
+            app:smoothScrollToTopFlag="@{vm.refreshFlag}" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

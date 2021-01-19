@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.my.moneymanager.m.bean.Record" />
+
+        <variable
+            name="click"
+            type="com.my.moneymanager.v.binder.ClickRecord" />
+
+        <import type="com.my.moneymanager.R" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <TextView
+            android:id="@+id/tv_position"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:onClick="@{()->click.onClick(item)}"
+            android:text="@{String.valueOf(item.position+1)}"
+            android:textColor="@color/myText"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:text="@{item.date}"
+            android:textColor="@color/myTitle"
+            app:layout_constraintEnd_toStartOf="@id/tv_name"
+            app:layout_constraintStart_toEndOf="@id/tv_position"
+            tools:text="20201212" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:text="@{item.desc}"
+            android:textColor="@color/myTitle"
+            app:layout_constraintEnd_toStartOf="@id/tv_price"
+            app:layout_constraintStart_toEndOf="@id/tv_date" />
+
+        <TextView
+            android:id="@+id/tv_price"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:background='@{item.money.startsWith("-")?0xFFFF646F:0xFF2fc989}'
+            android:gravity="start|center_vertical"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:text="@{item.money}"
+            android:textColor="@color/myTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_name" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
