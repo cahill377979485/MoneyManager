@@ -65,29 +65,34 @@ class MainActivity : AppCompatActivity() {
     private fun initDataFromLocal() {
         val repository = MyRepository()
         if (repository.recordList == null || (repository.recordList as ArrayList<Record>).isEmpty()) {
-            val inputStream = resources.openRawResource(R.raw.records)
-            try {
-                val reader = InputStreamReader(inputStream, "utf-8")
-                val bufferedReader = BufferedReader(reader)
-                var line: String
-                while (true) {
-                    line = bufferedReader.readLine()
-                    if (line == null) break
-                    line = line.replace("(\\t)+".toRegex(), "")//将空格过滤掉
-                    repository.add(
-                        Record(
-                            0,
-                            MyUtil.getFormatCreateTime(),
-                            line.substring(0, 8),
-                            "",
-                            line.substring(8)
+            AlertDialog.Builder(this).apply {
+                val inputStream = resources.openRawResource(R.raw.records)
+                try {
+                    val reader = InputStreamReader(inputStream, "utf-8")
+                    val bufferedReader = BufferedReader(reader)
+                    var line: String
+                    while (true) {
+                        line = bufferedReader.readLine()
+                        if (line == null) break
+                        line = line.replace("(\\t)+".toRegex(), "")//将空格过滤掉
+                        repository.add(
+                            Record(
+                                0,
+                                MyUtil.getFormatCreateTime(),
+                                line.substring(0, 8),
+                                "",
+                                line.substring(8)
+                            )
                         )
-                    )
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
+                setTitle("已从文档中重载基础数据。")
+                setPositiveButton("知道了", null)
+                create()
+                show()
             }
-
         }
     }
 
