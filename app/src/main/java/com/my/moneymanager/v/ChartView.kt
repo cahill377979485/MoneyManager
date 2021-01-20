@@ -134,7 +134,7 @@ class ChartView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
                 it.drawText(
                     value.toString(),
                     x,
-                    y,
+                    y + rect.height().toFloat() / 2f,
                     textPaint
                 )
             }
@@ -191,7 +191,7 @@ class ChartView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
                             textPaint
                         )
                     } else if (start > textLength
-                        && start < (viewWidth - 2f * textPaint.measureText(list.size.toString()))
+                        && start < (viewWidth - MARGIN_END - 2 * textPaint.measureText(list.size.toString()))
                     ) {//为最后一个值留出空间
                         it.drawText(
                             (i + 1).toString(),
@@ -221,32 +221,31 @@ class ChartView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
             drawText(
                 0f,
                 MARGIN_START + TEXT_MARGIN_END,
-                viewHeight - MARGIN_BOTTOM + rect.height() / 2f
+                viewHeight - MARGIN_BOTTOM
             )
             //画最后一个值的虚线和字
             drawDash(lastEndY)
             drawText(
                 lastTotalTemp,
                 viewWidth - MARGIN_END - textPaint.measureText(lastTotalTemp.toString()) - TEXT_MARGIN_END,
-                lastEndY + rect.height().toFloat() / 2f
+                lastEndY
             )
-            if (maxEndY != lastEndY) {//如果最后的值就是最大值，就不需要再画了
+            if (maxEndY != lastEndY && max != 0f) {//如果最后的值就是最大值，就不需要再画了
                 //画最大值的虚线和字
                 drawDash(maxEndY)
                 drawText(
                     max, maxEndX - textPaint.measureText(max.toString()) / 2f,
-                    maxEndY + rect.height().toFloat() / 2f
+                    maxEndY
                 )
             }
-            if (firstEndY != lastEndY) {//如果第一个值就是最后的值，就不需要再画了
+            if (firstEndY != lastEndY && totalStart != 0f) {//如果第一个值就是最后的值，就不需要再画了
                 //画第一个值的虚线和字
                 drawDash(firstEndY)
                 drawText(
                     totalStart, MARGIN_START + TEXT_MARGIN_END,
-                    firstEndY + rect.height().toFloat() / 2f
+                    firstEndY
                 )
             }
-
         }
     }
 }
