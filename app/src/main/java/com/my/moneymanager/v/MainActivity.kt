@@ -8,7 +8,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.blankj.utilcode.util.LogUtils
 import com.drakeet.multitype.MultiTypeAdapter
 import com.my.moneymanager.R
 import com.my.moneymanager.databinding.ActivityMainBinding
@@ -63,6 +62,9 @@ class MainActivity : AppCompatActivity() {
         MyUtil.setHelper(mBinding.rv, mList, mAdapter)
     }
 
+    /**
+     * 如果没有数据则从本地文档中重置数据
+     */
     private fun initDataFromLocal() {
         val repository = MyRepository()
         if (repository.recordList == null || (repository.recordList as ArrayList<Record>).isEmpty()) {
@@ -89,7 +91,8 @@ class MainActivity : AppCompatActivity() {
                 e.printStackTrace()
             }
             AlertDialog.Builder(this).apply {
-                setTitle("已从文档中重载基础数据。")
+                setTitle("通知")
+                setMessage("已从文档中重载基础数据。")
                 setPositiveButton("知道了", null)
                 create()
                 show()
@@ -133,6 +136,7 @@ class MainActivity : AppCompatActivity() {
                 val record = typeData.data as Record
                 AlertDialog.Builder(this).apply {
                     setTitle("操作")
+                    setMessage("请选择需要的操作")
                     setNeutralButton("删除") { dialog, _ ->
                         mViewModel.deleteRecord(record.createTime)
                         dialog.dismiss()
