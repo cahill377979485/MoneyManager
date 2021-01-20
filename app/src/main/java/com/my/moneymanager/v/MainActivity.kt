@@ -8,6 +8,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import com.blankj.utilcode.util.LogUtils
 import com.drakeet.multitype.MultiTypeAdapter
 import com.my.moneymanager.R
 import com.my.moneymanager.databinding.ActivityMainBinding

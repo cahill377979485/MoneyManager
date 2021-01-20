@@ -29,6 +29,7 @@ class ChartView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
     private var lastTotalTemp = 0f
     private var maxEndY = 0f
     private var maxEndX = 0f
+    private var textLength = 0f
 
     init {
         initialize()
@@ -43,6 +44,9 @@ class ChartView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
         private const val TEXT_MARGIN_END: Float = 5f
     }
 
+    /**
+     * 初始化
+     */
     private fun initialize() {
         paint.apply {
             style = Paint.Style.FILL_AND_STROKE
@@ -62,6 +66,9 @@ class ChartView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
         }
     }
 
+    /**
+     * 设置数据和初始值
+     */
     fun setData(newList: List<Record>, totalStart: Float = 0f) {
         if (newList.isEmpty()) return
         this.list = newList
@@ -87,8 +94,8 @@ class ChartView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
                 0f,
                 viewWidth.toFloat(),
                 0f,
-                Color.parseColor("#ff1dc9e3"),
-                Color.parseColor("#ff1de6ba"),
+                Color.parseColor("#ff1dc9e3"),//蓝色
+                Color.parseColor("#ff1de6ba"),//绿色
                 Shader.TileMode.CLAMP
             )
         }
@@ -100,6 +107,30 @@ class ChartView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
         val valueWidth = viewWidth.toFloat() - MARGIN_START - MARGIN_END
         val valueHeight = viewHeight.toFloat() - MARGIN_BOTTOM - MARGIN_TOP
         canvas?.let {
+
+            //画虚线的内部函数
+            fun drawDash(endY: Float) {
+                textPaint.color = colorDash
+                var startX = MARGIN_START
+                while (startX < (viewWidth - MARGIN_END)) {
+                    it.drawLine(startX, endY, startX + DASH_WIDTH / 2f, endY, textPaint)
+                    startX += DASH_WIDTH
+                    it.drawLine(startX, endY, startX + DASH_WIDTH / 2f, endY, textPaint)
+                    startX += DASH_WIDTH / 2f
+                }
+                textPaint.color = colorText
+            }
+
+            fun drawText(value: Float, x: Float, y: Float) {
+                textPaint.getTextBounds(value.toString(), 0, value.toString().length, rect)
+                it.drawText(
+                    value.toString(),
+                    x,
+                    y,
+                    textPaint
+                )
+            }
+
             //画x坐标轴
             it.drawLine(
                 MARGIN_START,
@@ -127,10 +158,7 @@ class ChartView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
                 for (i in list.indices) {
                     if (i == 0) {
                         lastY = viewHeight - MARGIN_BOTTOM - totalTemp / max * valueHeight
-                        path.lineTo(
-                            lastX,
-                            lastY
-                        )
+                        path.lineTo(lastX, lastY)
                         firstEndY = lastY
                         firstTotalTemp = totalTemp
                     }
@@ -140,12 +168,32 @@ class ChartView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
                     val endY = viewHeight - MARGIN_BOTTOM - totalTemp / max * valueHeight
                     val midX = (endX + lastX) / 2f
                     path.cubicTo(midX, lastY, midX, endY, endX, endY)
-                    it.drawText(
-                        (i + 1).toString(),
-                        endX - textPaint.measureText((i + 1).toString()) / 2f,
-                        30f,
-                        textPaint
-                    )
+                    val textWidth = textPaint.measureText((i + 1).toString())
+                    val start = endX - textWidth / 2f
+                    if (i == list.size - 1) {
+                        val s = if (endX + textWidth / 2f > viewWidth) {//如果数字多，依然要显示完全
+                            viewWidth - textWidth
+                        } else {
+                            endX + textWidth / 2f
+                        }
+                        it.drawText(
+                            (i + 1).toString(),
+                            s,
+                            30f,
+                            textPaint
+                        )
+                    } else if (start > textLength && start < (viewWidth - 2f * textPaint.measureText(
+                            list.size.toString()
+                        ))//为最后一个值留出空间
+                    ) {
+                        it.drawText(
+                            (i + 1).toString(),
+                            endX - textWidth / 2f,
+                            30f,
+                            textPaint
+                        )
+                        textLength = endX + textWidth / 2f
+                    }
                     lastX = endX
                     lastY = endY
                     if (i == list.size - 1) {
@@ -163,73 +211,35 @@ class ChartView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
             path.close()
             it.drawPath(path, paint)
             //画0
-            textPaint.getTextBounds("0", 0, 1, rect)
-            it.drawText(
-                "0",
+            drawText(
+                0f,
                 MARGIN_START + TEXT_MARGIN_END,
-                viewHeight - MARGIN_BOTTOM + rect.height() / 2f,
-                textPaint
+                viewHeight - MARGIN_BOTTOM + rect.height() / 2f
             )
             //画最后一个值的虚线和字
-            textPaint.color = colorDash
-            var startX = MARGIN_START
-            while (startX < (viewWidth - MARGIN_END)) {
-                it.drawLine(startX, lastEndY, startX + DASH_WIDTH / 2f, lastEndY, textPaint)
-                startX += DASH_WIDTH
-                it.drawLine(startX, lastEndY, startX + DASH_WIDTH / 2f, lastEndY, textPaint)
-                startX += DASH_WIDTH / 2f
-            }
-            textPaint.color = colorText
-            textPaint.getTextBounds(
-                lastTotalTemp.toString(),
-                0,
-                lastTotalTemp.toString().length,
-                rect
-            )
-            it.drawText(
-                lastTotalTemp.toString(),
+            drawDash(lastEndY)
+            drawText(
+                lastTotalTemp,
                 viewWidth - MARGIN_END - textPaint.measureText(lastTotalTemp.toString()) - TEXT_MARGIN_END,
-                lastEndY + rect.height().toFloat() / 2f,
-                textPaint
+                lastEndY + rect.height().toFloat() / 2f
             )
             if (maxEndY != lastEndY) {//如果最后的值就是最大值，就不需要再画了
                 //画最大值的虚线和字
-                textPaint.color = colorDash
-                startX = MARGIN_START
-                while (startX < (viewWidth - MARGIN_END)) {
-                    it.drawLine(startX, maxEndY, startX + DASH_WIDTH / 2f, maxEndY, textPaint)
-                    startX += DASH_WIDTH
-                    it.drawLine(startX, maxEndY, startX + DASH_WIDTH / 2f, maxEndY, textPaint)
-                    startX += DASH_WIDTH / 2f
-                }
-                textPaint.color = colorText
-                textPaint.getTextBounds(max.toString(), 0, max.toString().length, rect)
-                it.drawText(
-                    max.toString(),
-                    maxEndX - textPaint.measureText(max.toString()) / 2f,
-                    maxEndY + rect.height().toFloat() / 2f,
-                    textPaint
+                drawDash(maxEndY)
+                drawText(
+                    max, maxEndX - textPaint.measureText(max.toString()) / 2f,
+                    maxEndY + rect.height().toFloat() / 2f
                 )
             }
             if (firstEndY != lastEndY) {//如果第一个值就是最后的值，就不需要再画了
                 //画第一个值的虚线和字
-                textPaint.color = colorDash
-                startX = MARGIN_START
-                while (startX < (viewWidth - MARGIN_END)) {
-                    it.drawLine(startX, firstEndY, startX + DASH_WIDTH / 2f, firstEndY, textPaint)
-                    startX += DASH_WIDTH
-                    it.drawLine(startX, firstEndY, startX + DASH_WIDTH / 2f, firstEndY, textPaint)
-                    startX += DASH_WIDTH / 2f
-                }
-                textPaint.color = colorText
-                textPaint.getTextBounds(totalStart.toString(), 0, totalStart.toString().length, rect)
-                it.drawText(
-                    totalStart.toString(),
-                    MARGIN_START + TEXT_MARGIN_END,
-                    firstEndY + rect.height().toFloat() / 2f,
-                    textPaint
+                drawDash(firstEndY)
+                drawText(
+                    totalStart, MARGIN_START + TEXT_MARGIN_END,
+                    firstEndY + rect.height().toFloat() / 2f
                 )
             }
+
         }
     }
 }
