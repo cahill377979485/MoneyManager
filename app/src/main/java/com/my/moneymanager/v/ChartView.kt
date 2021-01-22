@@ -33,10 +33,6 @@ class ChartView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
     private var maxEndX = 0f
     private var textLength = 0f
 
-    init {
-        initialize()
-    }
-
     companion object {
         private const val MARGIN_START: Float = 20f
         private const val MARGIN_END: Float = 20f
@@ -46,10 +42,7 @@ class ChartView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
         private const val TEXT_MARGIN_END: Float = 5f
     }
 
-    /**
-     * 初始化
-     */
-    private fun initialize() {
+    init {
         paint.apply {
             style = Paint.Style.FILL_AND_STROKE
             isAntiAlias = true
@@ -78,6 +71,20 @@ class ChartView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
         //得到最大值
         this.totalStart = totalStart
         var total = totalStart
+        //判断是否是全都是还款，如果是就全都取反。让其看起来跟全是借款差不多的样式。
+        var allIn = true
+        for (i in list.indices) {
+            if (list[i].money.toFloat() < 0) {
+                allIn = false
+                break
+            }
+        }
+        if (allIn) {
+            this.totalStart = 0f
+            for (i in list.indices) {
+                list[i].money = "-" + list[i].money
+            }
+        }
         max = 0f
         for (i in list.indices) {
             val money = list[i].money.toFloat()

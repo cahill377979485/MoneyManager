@@ -13,7 +13,7 @@ import com.my.moneymanager.vm.ChartVM
 class ChartActivity : AppCompatActivity() {
     private lateinit var mViewModel: ChartVM
     private lateinit var mBinding: ActivityChartBinding
-    private lateinit var list: ArrayList<Record>
+    private lateinit var mList: ArrayList<Record>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,12 +23,12 @@ class ChartActivity : AppCompatActivity() {
         mBinding.lifecycleOwner = this//重要！DataBinding加上这句之后，绑定了LiveData数据源的xml控件才会随着数据变化而改变。
         val records: Records? = intent.getParcelableExtra("DATA")
         records?.let {
-            list = it.list as ArrayList<Record>
-            if (list.isEmpty()) {
+            mList = it.list as ArrayList<Record>
+            if (mList.isEmpty()) {
                 finish()
                 return
             }
-            mBinding.cv.setData(list, it.totalStart)
+            mBinding.cv.setData(mList, it.totalStart)
         }
     }
 }

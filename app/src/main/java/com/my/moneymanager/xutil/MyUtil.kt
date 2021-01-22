@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.drakeet.multitype.MultiTypeAdapter
 import com.my.moneymanager.m.MyRepository
 import com.my.moneymanager.m.bean.Record
+import com.my.moneymanager.vm.MainVM
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -22,7 +23,12 @@ object MyUtil {
     /**
      * 设置长按拖动
      */
-    fun setHelper(rv: RecyclerView?, list: ArrayList<Record>?, adapter: MultiTypeAdapter) {
+    fun setHelper(
+        rv: RecyclerView?,
+        list: ArrayList<Record>?,
+        vm: MainVM,
+        adapter: MultiTypeAdapter
+    ) {
         val helper = ItemTouchHelper(object : ItemTouchHelper.Callback() {
             override fun getMovementFlags(
                 recyclerView: RecyclerView,
@@ -45,6 +51,9 @@ object MyUtil {
                 viewHolder: ViewHolder,
                 target: ViewHolder
             ): Boolean {
+                if (vm.searchFlag.value == true) {
+                    return true
+                }
                 val fromPosition = viewHolder.adapterPosition //得到拖动ViewHolder的position
                 val toPosition = target.adapterPosition //得到目标ViewHolder的position
                 if (fromPosition < toPosition) {
@@ -68,6 +77,10 @@ object MyUtil {
             ) {
                 if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
                     viewHolder?.itemView?.setBackgroundColor(Color.LTGRAY)
+                    if (vm.searchFlag.value == true) {
+                        ToastUtils.instance?.showInfo("请先取消实时搜索")
+                        return
+                    }
                 }
                 super.onSelectedChanged(viewHolder, actionState)
             }
@@ -78,14 +91,19 @@ object MyUtil {
             ) {
                 super.clearView(recyclerView, viewHolder)
                 viewHolder.itemView.setBackgroundColor(0)
+                //保证后面的list是所有的数据，而不是部分数据
+                if (vm.searchFlag.value == true) {
+                    return
+                }
                 if (list != null && list.size > 0) {
                     val newList: MutableList<Record> = ArrayList()
                     for (i in list.indices) {
-                        val o = list[i]
-                        o.position = i
-                        newList.add(o)
+                        val record = list[i]
+                        record.position = i
+                        newList.add(record)
                     }
                     MyRepository().save(newList)
+                    vm.dataList.postValue(newList)
                 }
             }
         })

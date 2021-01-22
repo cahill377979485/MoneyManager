@@ -58,7 +58,7 @@
 
         <TextView
             android:id="@+id/tv_price"
-            android:layout_width="100dp"
+            android:layout_width="90dp"
             android:layout_height="match_parent"
             android:background='@{item.money.startsWith("-")?0xFFFF646F:0xFF2fc989}'
             android:gravity="start|center_vertical"

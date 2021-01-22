@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
             setHasFixedSize(true)
             adapter = mAdapter
         }
-        MyUtil.setHelper(mBinding.rv, mList, mAdapter)
+        MyUtil.setHelper(mBinding.rv, mList, mViewModel, mAdapter)
     }
 
     /**

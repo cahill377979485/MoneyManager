@@ -15,10 +15,7 @@ import com.my.moneymanager.m.bean.Records
 import com.my.moneymanager.v.ChartActivity
 import com.my.moneymanager.xutil.MyUtil
 import com.my.moneymanager.xutil.ToastUtils
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import java.util.*
 
 /**
@@ -59,7 +56,7 @@ class MainVM(application: Application) : AndroidViewModel(application) {
         runBlocking {
 
         }
-        MainScope().launch {
+        GlobalScope.launch {
             delay(1000)
         }
     }
@@ -135,7 +132,7 @@ class MainVM(application: Application) : AndroidViewModel(application) {
             dataList.postValue(it)//这句因为数据改变，在MainActivity中被观察到，所以会自动更新列表
         }
         val strTotal: String = (preString + total / 100).replace(".0+$".toRegex(), "")
-        val strIn: String = ("  收" + totalIn / 100).replace(".0+$".toRegex(), "")
+        val strIn: String = (" 收" + totalIn / 100).replace(".0+$".toRegex(), "")
         val strOut: String = (" 支" + totalOut / 100).replace(".0+$".toRegex(), "")
         totalStr.postValue(strTotal + strIn + strOut)
     }
@@ -146,7 +143,8 @@ class MainVM(application: Application) : AndroidViewModel(application) {
     private fun afterTextChanged(s: String) {
         repository.recordList?.let { list ->
             list.filter {
-                val str = it.date + it.desc + it.money
+                val str =
+                    "^" + it.date + it.desc + if (it.money.contains("-")) it.money else "+" + it.money + "$"
                 str.toLowerCase(Locale.ROOT).contains(s.toLowerCase(Locale.ROOT))
             }.apply {
                 updateDataAndTotalStr(this as ArrayList<Record>, "总额小计")
