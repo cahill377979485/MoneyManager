@@ -17,10 +17,19 @@ class ExampleUnitTest {
 
     @Test
     fun test() {
-        val str = "20201211-100"
+        val str = "20201211-1100.00000"
         val arr = MyUtil.getDateDescAndMoneyArrayByRegex(str)
         assertEquals("20201211", arr[0])
         assertEquals("", arr[1])
-        assertEquals("-100", arr[2])
+        assertEquals("-1100", arr[2])
+    }
+
+    @Test
+    fun test2() {
+        val b1 = 1
+        val b2 = 2
+        val b3 = 3
+        val result = b1 < 9 && b2 + b3 > 4
+        assertEquals(result, true)
     }
 }
