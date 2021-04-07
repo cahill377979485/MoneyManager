@@ -250,7 +250,7 @@ class ChartView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
                 viewWidth - MARGIN_END - textPaint.measureText(lastTotalTemp.toString()) - TEXT_MARGIN_END,
                 lastEndY
             )
-            if (maxEndY != lastEndY && max != 0f) {//如果最后的值就是最大值，就不需要再画了
+            if (maxEndY != lastEndY && max != 0f && maxEndY > 0) {//如果最后的值就是最大值，就不需要再画了
                 //画最大值的虚线和字
                 drawDash(maxEndY)
                 drawText(
