@@ -136,4 +136,15 @@ object MyUtil {
     @SuppressLint("SimpleDateFormat")
     fun getFormatCreateTime(): String =
         SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS").format(Date(System.currentTimeMillis()))
+
+    @SuppressLint("SimpleDateFormat")
+    fun getFormatDateToday(): String =
+        SimpleDateFormat("yyyy-MM-dd").format(Date(System.currentTimeMillis()))
+
+    /**
+     * 获取开始计算利息的时间，以八位数字的形式
+     */
+    fun getStartDateInt(): Int {
+        return 20201225
+    }
 }

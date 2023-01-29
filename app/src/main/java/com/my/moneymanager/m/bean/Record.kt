@@ -1,7 +1,7 @@
 package com.my.moneymanager.m.bean
 
 import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import kotlinx.android.parcel.Parcelize
 
 /**
  * @author 文琳
@@ -14,5 +14,6 @@ data class Record(
     var createTime: String,
     var date: String,
     var desc: String = "",
-    var money: String
+    var money: String,
+    var sum: Int = 0
 ) : Parcelable

@@ -18,6 +18,9 @@ import com.my.moneymanager.v.binder.RecordBinder
 import com.my.moneymanager.vm.MainVM
 import com.my.moneymanager.xutil.MyUtil
 import com.my.moneymanager.xutil.TypeDataNames
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -126,6 +129,9 @@ class MainActivity : AppCompatActivity() {
                 }
             })
             refreshData()
+            GlobalScope.launch {
+                calculateInterests()
+            }
         }
     }
 

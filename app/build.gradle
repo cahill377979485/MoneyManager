@@ -52,6 +52,9 @@ dependencies {
     implementation 'com.drakeet.multitype:multitype:4.2.0'
     //封装的工具类（屏幕、文件、尺寸、数据库等工具）
     implementation 'com.blankj:utilcode:1.12.6'
+    //http网络数据请求
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
 
     //检查内存泄漏的工具
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'

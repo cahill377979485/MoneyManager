@@ -1,7 +1,7 @@
 package com.my.moneymanager.m.bean
 
 import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import kotlinx.android.parcel.Parcelize
 
 /**
  * @author 文琳
