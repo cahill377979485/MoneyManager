@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.*
 import android.text.TextPaint
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.View
 import com.my.moneymanager.m.bean.Record
 import kotlin.math.max

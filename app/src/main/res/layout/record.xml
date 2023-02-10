@@ -33,7 +33,7 @@
 
         <TextView
             android:id="@+id/tv_date"
-            android:layout_width="80dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:paddingStart="8dp"
@@ -42,7 +42,7 @@
             android:textColor="@color/myTitle"
             app:layout_constraintEnd_toStartOf="@id/tv_name"
             app:layout_constraintStart_toEndOf="@id/tv_position"
-            tools:text="20201212" />
+            tools:text="2020121222222" />
 
         <TextView
             android:id="@+id/tv_name"

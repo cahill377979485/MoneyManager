@@ -4,12 +4,14 @@ import android.app.Application
 import android.content.Context
 import com.blankj.utilcode.util.Utils
 import com.squareup.leakcanary.LeakCanary
+import dagger.hilt.android.HiltAndroidApp
 
 /**
  * @author 文琳
  * @time 2021/1/5 9:38
  * @desc 全局设置
  */
+@HiltAndroidApp
 class MyApplication : Application() {
     companion object{
         lateinit var context: Context

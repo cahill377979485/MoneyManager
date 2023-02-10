@@ -18,6 +18,7 @@ import com.my.moneymanager.v.binder.RecordBinder
 import com.my.moneymanager.vm.MainVM
 import com.my.moneymanager.xutil.MyUtil
 import com.my.moneymanager.xutil.TypeDataNames
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -26,12 +27,15 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import javax.inject.Inject
 
 /**
  * 主页面
  */
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private lateinit var mViewModel: MainVM
+    @Inject
+    lateinit var mViewModel: MainVM
     private val mList = ArrayList<Record>()
     private lateinit var mAdapter: MultiTypeAdapter
     private lateinit var mBinding: ActivityMainBinding

@@ -23,6 +23,7 @@ import kotlinx.coroutines.*
 import okhttp3.*
 import java.io.IOException
 import java.util.*
+import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 /**
@@ -30,7 +31,7 @@ import kotlin.collections.ArrayList
  * @time 2021/1/5 10:45
  * @desc 主页面的ViewModel
  */
-class MainVM(application: Application) : AndroidViewModel(application) {
+class MainVM @Inject constructor(application: Application) : AndroidViewModel(application) {
     var dataList: MutableLiveData<List<Record>> = MutableLiveData()//记录列表数据
     var totalStr: MutableLiveData<String> = MutableLiveData()//总价值统计文本
     var totalInterestStr: MutableLiveData<String> = MutableLiveData()//总利息统计文本
