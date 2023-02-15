@@ -1,6 +1,6 @@
 MoneyManager
 
-借还管理
+### 借还管理
 
 Kotlin+MVVM架构
 
@@ -13,3 +13,12 @@ Kotlin+MVVM架构
 加了一个自定义控件显示具体未还总额的曲线图。
 
 加了一个计算如果从20201225开始将这些钱放在支付宝余额宝能有多少利息的功能。
+
+# 主界面
+![image](https://github.com/cahill377979485/MoneyManager/blob/master/%E5%BA%94%E7%94%A8%E6%88%AA%E5%9B%BE/%E4%B8%BB%E7%95%8C%E9%9D%A2.jpg?raw=true)
+
+# 实时搜索
+![image](https://github.com/cahill377979485/MoneyManager/blob/master/%E5%BA%94%E7%94%A8%E6%88%AA%E5%9B%BE/%E5%AE%9E%E6%97%B6%E6%90%9C%E7%B4%A2.jpg?raw=true)
+
+# 曲线图
+![image](https://github.com/cahill377979485/MoneyManager/blob/master/%E5%BA%94%E7%94%A8%E6%88%AA%E5%9B%BE/%E6%9B%B2%E7%BA%BF%E5%9B%BE.jpg?raw=true)
